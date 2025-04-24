@@ -1,7 +1,7 @@
 let token = "";
 
 const api = "http://localhost:4000/api";
-const todoApi = "http://localhost:4000/api/todos";
+const todoApi = `${api}/todos`;
 
 function register() {
   const email = document.getElementById("email").value;
@@ -46,8 +46,10 @@ function login() {
 }
 
 function addTodo() {
-  const task = document.getElementById("newTask").value;
-  fetch(`${todoApi}`, {
+  const taskInput = document.getElementById("newTask");
+  const task = taskInput.value;
+
+  fetch(todoApi, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -55,11 +57,14 @@ function addTodo() {
     },
     body: JSON.stringify({ task })
   })
-  .then(() => getTodos());
+  .then(() => {
+    taskInput.value = ""; // Clear input field after adding
+    getTodos();
+  });
 }
 
 function getTodos() {
-  fetch(`${todoApi}`, {
+  fetch(todoApi, {
     headers: { Authorization: `Bearer ${token}` }
   })
   .then(res => res.json())
@@ -69,8 +74,8 @@ function getTodos() {
     todos.forEach(todo => {
       const li = document.createElement("li");
       li.innerHTML = `
-        ${todo.task} - ${todo.done ? "✅" : "❌"}
-        <button onclick="toggle(${JSON.stringify(todo)})">Toggle</button>
+        ${todo.task} - <span>${todo.done ? "✅" : "❌"}</span>
+        <button onclick='toggle(${JSON.stringify(todo)})'>Toggle</button>
         <button onclick="remove('${todo._id}')">Delete</button>
       `;
       list.appendChild(li);
@@ -99,11 +104,20 @@ function remove(id) {
 }
 
 function getQuote() {
-  fetch(`${api}/quote`, {
+  fetch(`${api}/inspire`, { // ✅ corrected from /quote to /inspire
     headers: { Authorization: `Bearer ${token}` }
   })
-  .then(res => res.json())
+  .then(res => {
+    if (!res.ok) throw new Error("Quote fetch failed");
+    return res.json();
+  })
   .then(data => {
-    document.getElementById("quote").innerText = `${data.message} — "${data.quote}"`;
+    document.getElementById("quote").innerText =
+      `${data.message} — "${data.quote}"`;
+  })
+  .catch(err => {
+    document.getElementById("quote").innerText =
+      "❌ Failed to load quote.";
+    console.error("Quote error:", err);
   });
 }
