@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CultureMonkey Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>🧠 AskCooper Dashboard</h1>
+
+  <section id="auth">
+    <h2>Login/Register</h2>
+    <input id="email" type="email" placeholder="Email" />
+    <input id="password" type="password" placeholder="Password" />
+    <button onclick="register()">Register</button>
+    <button onclick="login()">Login</button>
+    <p id="authMsg"></p>
+  </section>
+
+  <section id="todoSection" class="hidden">
+    <h2>📝 Your Todos</h2>
+    <input id="newTask" type="text" placeholder="Add new task..." />
+    <button onclick="addTodo()">Add</button>
+    <ul id="todoList"></ul>
+  </section>
+
+  <section id="quoteSection" class="hidden">
+    <h2>📣 Quote of the Moment</h2>
+    <button onclick="getQuote()">Get Quote</button>
+    <p id="quote"></p>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
