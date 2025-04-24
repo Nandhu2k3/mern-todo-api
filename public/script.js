@@ -1,7 +1,8 @@
 let token = "";
 
-const api = "http://localhost:4000/api";
-const todoApi = `${api}/todos`;
+const api = "https://mern-todo-api-jvw8.onrender.com/api";
+const todoApi = "https://mern-todo-api-jvw8.onrender.com/api/todos";
+
 
 function register() {
   const email = document.getElementById("email").value;
